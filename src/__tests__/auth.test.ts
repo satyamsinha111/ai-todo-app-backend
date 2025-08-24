@@ -17,7 +17,7 @@ describe('AuthService', () => {
   describe('registerUser', () => {
     it('should register a new user successfully', async () => {
       const userData = {
-        email: 'test@example.com',
+        email: 'test1334@example.com',
         password: 'SecurePass123!',
         firstName: 'John',
         lastName: 'Doe',
@@ -28,7 +28,7 @@ describe('AuthService', () => {
 
       // Mock User constructor and save
       const mockUser = {
-        _id: 'user123',
+        _id: 'user1234',
         email: userData.email,
         firstName: userData.firstName,
         lastName: userData.lastName,
@@ -41,7 +41,7 @@ describe('AuthService', () => {
       const result = await AuthService.registerUser(userData);
 
       expect(result).toEqual({
-        id: 'user123',
+        id: 'user1234',
         email: userData.email,
         firstName: userData.firstName,
         lastName: userData.lastName,
@@ -52,7 +52,7 @@ describe('AuthService', () => {
 
     it('should throw ConflictError if user already exists', async () => {
       const userData = {
-        email: 'test@example.com',
+        email: 'test1334@example.com',
         password: 'SecurePass123!',
         firstName: 'John',
         lastName: 'Doe',
@@ -68,12 +68,12 @@ describe('AuthService', () => {
   describe('loginUser', () => {
     it('should login user successfully with valid credentials', async () => {
       const loginData = {
-        email: 'test@example.com',
+        email: 'test1334@example.com',
         password: 'SecurePass123!',
       };
 
       const mockUser = {
-        _id: 'user123',
+        _id: 'user1234',
         email: loginData.email,
         firstName: 'John',
         lastName: 'Doe',
@@ -94,7 +94,7 @@ describe('AuthService', () => {
       const result = await AuthService.loginUser(loginData);
 
       expect(result.user).toEqual({
-        id: 'user123',
+        id: 'user1234',
         email: loginData.email,
         firstName: 'John',
         lastName: 'Doe',
@@ -110,7 +110,7 @@ describe('AuthService', () => {
 
     it('should throw AuthenticationError with invalid credentials', async () => {
       const loginData = {
-        email: 'test@example.com',
+        email: 'test1334@example.com',
         password: 'WrongPassword123!',
       };
 

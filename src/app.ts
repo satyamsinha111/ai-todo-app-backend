@@ -4,11 +4,11 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import swaggerUi from 'swagger-ui-express';
 import path from 'path';
-import { config, validateConfig } from './config';
+import { config, EnvironmentConfig } from './infrastructure/config';
 import { specs } from './config/swagger';
-import { connectToDatabase } from './database/connection';
+import { DatabaseConnection } from './infrastructure/database';
 import { globalErrorHandler } from './utils/errors';
-import authRoutes from './routes/auth';
+import { DIContainer } from './dependency-injection';
 
 /**
  * Express Application
@@ -124,9 +124,10 @@ class App {
     this.app.get('/pages/password-reset-failed', (req, res) => {
       res.sendFile(path.join(__dirname, '../public/pages/password-reset-failed.html'));
     });
-
+    
     // API routes
-    this.app.use('/api/auth', authRoutes);
+    const container = DIContainer.getInstance();
+    this.app.use('/api/auth', container.getAuthRoutes().router);
 
     // 404 handler for undefined routes
     this.app.use('*', (req, res) => {
@@ -151,10 +152,10 @@ class App {
   public async start(): Promise<void> {
     try {
       // Validate configuration
-      validateConfig();
+      config.validate();
 
       // Connect to database
-      await connectToDatabase();
+      await DatabaseConnection.connect();
 
       // Start server
       this.app.listen(config.port, () => {
